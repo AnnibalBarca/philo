@@ -6,16 +6,16 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:32:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/23 17:35:44 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/23 18:00:37 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_args(int ac, char **av)
+int check_args(int ac, char **av)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	if (ac < 5 || ac > 6)
 		return (0);
@@ -36,9 +36,40 @@ int	check_args(int ac, char **av)
 	return (1);
 }
 
-int	main(int ac, char **av)
+int run_philo(t_data *data)
 {
-	t_data			data;
+	int i;
+	pthread_t monitor_thread;
+
+	data->start_time = get_time();
+	i = 0;
+	while (i < data->num_of_phis)
+	{
+		data->philos[i].last_meal_time = data->start_time;
+		i++;
+	}
+	i = 0;
+	while (i < data->num_of_phis)
+	{
+		if (pthread_create(&data->philos[i].thread, NULL, PHILO_ROUTEINE FUNCT, &data->philos[i]) != 0)
+			return (0);
+		i++;
+	}
+	if (pthread_create(&monitor_thread, NULL, MONITORING ROUTINE FUNCT, data) != 0)
+		return (0);
+	i = 0;
+	while (i < data->num_of_phis)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
+	pthread_join(monitor_thread, NULL);
+	return (1);
+}
+
+int main(int ac, char **av)
+{
+	t_data data;
 
 	if (!check_args(ac, av))
 	{
