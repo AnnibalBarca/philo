@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/15 19:44:48 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/26 11:42:57 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include "libft.h"
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -35,7 +36,6 @@ typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	int					phi_id;
-	int					state;
 	int					meals_already_eaten;
 	long				last_meal_time;
 	pthread_t			thread;
@@ -61,8 +61,34 @@ typedef struct s_data
 
 int						data_init(t_data *data, int ac, char **av);
 
-int						cleanup_mutexes_init(t_data *data,
+int						init_mutexes(t_data *data);
+
+int						init_philosophers(t_data *data);
+
+int						cleanup_mutexes_partial(t_data *data,
 							int forks_initialized, int print_initialized,
 							int data_initialized);
+
+void					cleanup_all(t_data *data);
+
+long					get_time(void);
+
+void					print_status(t_philo *philo, char *msg);
+
+int						run_philo(t_data *data);
+
+void					*philo_routine(void *arg);
+
+void					*monitor_routine(void *arg);
+
+void					take_forks(t_philo *philo);
+
+void					put_forks(t_philo *philo);
+
+void					eat(t_philo *philo);
+
+void					philo_sleep(t_philo *philo);
+
+void					think(t_philo *philo);
 
 #endif

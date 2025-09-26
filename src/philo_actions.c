@@ -38,16 +38,10 @@ void	put_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->data_mutex);
-	philo->last_meal_time = get_time();
-	pthread_mutex_unlock(&philo->data->data_mutex);
 	print_status(philo, EAT_MSG);
+	philo->last_meal_time = get_time();
 	usleep(philo->data->time_to_eat * 1000);
-	pthread_mutex_lock(&philo->data->data_mutex);
-	if (philo->data->num_of_meals == 0 
-		|| philo->meals_already_eaten < philo->data->num_of_meals)
-		philo->meals_already_eaten++;
-	pthread_mutex_unlock(&philo->data->data_mutex);
+	philo->meals_already_eaten++;
 }
 
 void	philo_sleep(t_philo *philo)

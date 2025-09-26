@@ -9,6 +9,8 @@ DEPS = $(OBJ:.o=.d)
 
 
 
+SRC_PHILO = src/init.c src/cleanup.c src/utils.c src/philo_actions.c src/philo_routine.c src/monitor_routine.c
+
 SRC_ALL = $(SRC_PHILO) main.c
 
 GREEN=\033[0;32m
@@ -22,8 +24,8 @@ all: $(LIBFT) $(OBJ_DIR) $(NAME)
 $(OBJ_DIR)/%.o: %.c Makefile libft/Makefile
 	@echo "$(WHITE) mkdir -p $(dir $@) $(NC)"
 	@mkdir -p $(dir $@)
-	@echo "$(GREEN) $(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I$(LIBFT_DIR) $(NC)"
-	@$(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I$(LIBFT_DIR)
+	@echo "$(GREEN) $(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I$(LIBFT_DIR) -Iinclude $(NC)"
+	@$(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I$(LIBFT_DIR) -Iinclude
 
 -include $(DEPS)
 

@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:32:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/23 18:00:37 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/26 09:46:38 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ int run_philo(t_data *data)
 	i = 0;
 	while (i < data->num_of_phis)
 	{
-		if (pthread_create(&data->philos[i].thread, NULL, PHILO_ROUTEINE FUNCT, &data->philos[i]) != 0)
+		if (pthread_create(&data->philos[i].thread, NULL, philo_routine, &data->philos[i]) != 0)
 			return (0);
 		i++;
 	}
-	if (pthread_create(&monitor_thread, NULL, MONITORING ROUTINE FUNCT, data) != 0)
+	if (pthread_create(&monitor_thread, NULL, monitor_routine, data) != 0)
 		return (0);
 	i = 0;
 	while (i < data->num_of_phis)

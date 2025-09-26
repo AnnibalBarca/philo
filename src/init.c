@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:25 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/19 14:18:05 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/26 11:43:17 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/philo.h"
+#include "philo.h"
 
 int	data_init(t_data *data, int ac, char **av)
 {
@@ -46,6 +46,7 @@ int	init_mutexes(t_data *data)
 		return (cleanup_mutexes_partial(data, data->num_of_phis, 1, 0));
 	return (1);
 }
+
 static void	assign_forks(t_philo *philo, t_data *data, int i)
 {
 	if (i == 0)
@@ -59,6 +60,7 @@ static void	assign_forks(t_philo *philo, t_data *data, int i)
 		philo->right_fork = &data->forks[i];
 	}
 }
+
 int	init_philosophers(t_data *data)
 {
 	int	i;
@@ -70,7 +72,6 @@ int	init_philosophers(t_data *data)
 	while (i < data->num_of_phis)
 	{
 		data->philos[i].phi_id = i + 1;
-		data->philos[i].state = THINKING;
 		data->philos[i].meals_already_eaten = 0;
 		data->philos[i].last_meal_time = 0;
 		data->philos[i].data = data;
