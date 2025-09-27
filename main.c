@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:32:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/26 09:46:38 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:40:25 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int run_philo(t_data *data)
 	i = 0;
 	while (i < data->num_of_phis)
 	{
+		pthread_mutex_lock(&data->philos[i].mutex);
 		data->philos[i].last_meal_time = data->start_time;
+		pthread_mutex_unlock(&data->philos[i].mutex);
 		i++;
 	}
 	i = 0;

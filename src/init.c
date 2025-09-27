@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:25 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/26 11:43:17 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:31:04 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	init_philosophers(t_data *data)
 		data->philos[i].meals_already_eaten = 0;
 		data->philos[i].last_meal_time = 0;
 		data->philos[i].data = data;
+		if (pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
+			return (0);
 		assign_forks(&data->philos[i], data, i);
 		i++;
 	}

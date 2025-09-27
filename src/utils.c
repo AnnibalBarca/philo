@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/23 17:59:48 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:48:46 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,16 @@ void	print_status(t_philo *philo, char *msg)
 	long	time;
 
 	pthread_mutex_lock(&philo->data->print_mutex);
+	pthread_mutex_lock(&philo->data->data_mutex);
+	if (!philo->data->is_running)
+	{
+		pthread_mutex_unlock(&philo->data->data_mutex);
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		return ;
+	}
 	time = get_time() - philo->data->start_time;
 	printf("%ld %d %s\n", time, philo->phi_id, msg);
+	pthread_mutex_unlock(&philo->data->data_mutex);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 

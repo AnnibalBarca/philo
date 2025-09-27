@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:02:47 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/23 18:10:21 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:40:25 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	cleanup_all(t_data *data)
 	while (i < data->num_of_phis)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_mutex);

@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/26 11:42:57 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:40:25 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_philo
 	int					meals_already_eaten;
 	long				last_meal_time;
 	pthread_t			thread;
+	pthread_mutex_t		mutex;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	t_data				*data;

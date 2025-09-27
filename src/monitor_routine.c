@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 09:18:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 16:15:23 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:49:39 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ static int	is_philo_dead(t_data *data, int i)
 	long long current_time;
 	long long last_meal;
 
-	pthread_mutex_lock(&data->data_mutex);
 	current_time = get_time();
+	pthread_mutex_lock(&data->philos[i].mutex);
 	last_meal = data->philos[i].last_meal_time;
+	pthread_mutex_unlock(&data->philos[i].mutex);
 	if (current_time - last_meal > data->time_to_die)
 	{
+		print_status(&data->philos[i], DEATH_MSG);
+		pthread_mutex_lock(&data->data_mutex);
 		data->is_running = 0;
 		pthread_mutex_unlock(&data->data_mutex);
-		print_status(&data->philos[i], DEATH_MSG);
 		return (1);
 	}
-	pthread_mutex_unlock(&data->data_mutex);
 	return (0);
 }
 
@@ -56,10 +57,10 @@ static int	check_phis(t_data *data, int all_have_eaten)
 	all_have_eaten = 1;
 	while (i < num_philosophers)
 	{
-		pthread_mutex_lock(&data->philos[i].meals_already_eaten);
+		pthread_mutex_lock(&data->philos[i].mutex);
 		if (data->philos[i].meals_already_eaten < data->num_of_meals)
 			all_have_eaten = 0;
-		pthread_mutex_unlock(&data->philos[i].meals_already_eaten);
+		pthread_mutex_unlock(&data->philos[i].mutex);
 		i++;
 	}
 	i = 0;
