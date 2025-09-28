@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 16:40:25 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/28 13:47:22 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ typedef struct s_philo
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	t_data				*data;
+	bool				is_ready;
+	int                 left_idx;
+	int                 right_idx;
 }						t_philo;
 
 typedef struct s_data
@@ -55,9 +58,12 @@ typedef struct s_data
 	int					is_running;
 	long				start_time;
 	pthread_mutex_t		*forks;
+	int                 *fork_taken;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		data_mutex;
+	int					is_ready;
 	t_philo				*philos;
+	bool				all_philos_ready;
 }						t_data;
 
 int						data_init(t_data *data, int ac, char **av);
@@ -73,6 +79,8 @@ int						cleanup_mutexes_partial(t_data *data,
 void					cleanup_all(t_data *data);
 
 long					get_time(void);
+
+int						ft_usleep_ms(long ms, t_data *data);
 
 void					print_status(t_philo *philo, char *msg);
 
