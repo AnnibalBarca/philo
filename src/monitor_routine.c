@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 09:18:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 16:49:39 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:29:44 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	is_philo_dead(t_data *data, int i)
 {
-	long long current_time;
-	long long last_meal;
+	long long	current_time;
+	long long	last_meal;
 
 	current_time = get_time();
 	pthread_mutex_lock(&data->philos[i].mutex);
@@ -73,17 +73,38 @@ static int	check_phis(t_data *data, int all_have_eaten)
 	return (all_have_eaten);
 }
 
+bool	check_all_ready(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_of_phis)
+	{
+		if (!get_bool(&data->philos[i].mutex, &data->philos[i].is_ready))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 void	*monitor_routine(void *arg)
 {
 	t_data	*data;
-	int		i;
 	int		all_have_eaten;
 
 	all_have_eaten = 0;
 	data = (t_data *)arg;
 	while (1)
 	{
-		i = 0;
+		if (!data->all_philos_ready)
+		{
+			if (check_all_ready(data))
+			{
+				pthread_mutex_lock(&data->data_mutex);
+				data->all_philos_ready = true;
+				pthread_mutex_unlock(&data->data_mutex);
+			}
+		}
 		all_have_eaten = check_phis(data, all_have_eaten);
 		if (all_have_eaten == -1)
 			return (NULL);

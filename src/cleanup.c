@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:02:47 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 16:40:25 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:17:32 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	cleanup_all(t_data *data)
 	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->data_mutex);
 	free(data->forks);
+	free(data->fork_taken);
 	free(data->philos);
 }
-
-

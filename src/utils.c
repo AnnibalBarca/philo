@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 16:48:46 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:17:43 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,73 @@ void	print_status(t_philo *philo, char *msg)
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
+int	ft_usleep_ms(long ms, t_data *data)
+{
+	long	start;
+
+	start = get_time();
+	while (get_time() - start < ms)
+	{
+		pthread_mutex_lock(&data->data_mutex);
+		if (!data->is_running)
+		{
+			pthread_mutex_unlock(&data->data_mutex);
+			return (1);
+		}
+		pthread_mutex_unlock(&data->data_mutex);
+		usleep(100);
+	}
+	return (0);
+}
+
+int	take_single_fork(pthread_mutex_t *fork, t_philo *ph, int idx)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&ph->data->data_mutex);
+		if (!ph->data->is_running)
+		{
+			pthread_mutex_unlock(&ph->data->data_mutex);
+			return (0);
+		}
+		pthread_mutex_unlock(&ph->data->data_mutex);
+		pthread_mutex_lock(fork);
+		if (ph->data->fork_taken[idx] == -1)
+		{
+			ph->data->fork_taken[idx] = 1;
+			pthread_mutex_unlock(fork);
+			print_status(ph, FORK_MSG);
+			return (1);
+		}
+		pthread_mutex_unlock(fork);
+		usleep(100);
+	}
+}
+
+long int	ft_strtol(const char *str)
+{
+	long int	result;
+	int			sign;
+	size_t		i;
+
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			sign = -sign;
+	while (str[i] <= '9' && str[i] >= '0')
+	{
+		if ((result * 10 + str[i] - '0') / 10 != result)
+		{
+			if (sign == -1)
+				return (LONG_MIN);
+			return (LONG_MAX);
+		}
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * sign);
+}

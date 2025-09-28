@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/27 14:05:25 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:44:34 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,15 @@ static void	handle_single_philo(t_philo *philo)
 	usleep(philo->data->time_to_die * 1000);
 }
 
-void	*philo_routine(void *arg)
+static void	running_routine(t_philo	*philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	if (philo->data->num_of_phis == 1)
-	{
-		handle_single_philo(philo);
-		return (NULL);
-	}
-
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->data_mutex);
 		if (!philo->data->is_running)
 		{
 			pthread_mutex_unlock(&philo->data->data_mutex);
-			break ;
+			return ;
 		}
 		pthread_mutex_unlock(&philo->data->data_mutex);
 		think(philo);
@@ -47,6 +38,28 @@ void	*philo_routine(void *arg)
 		put_forks(philo);
 		philo_sleep(philo);
 	}
-	return (NULL);
 }
 
+void	*philo_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	set_bool(&philo->mutex, &philo->is_ready, true);
+	if (philo->data->num_of_phis == 1)
+	{
+		handle_single_philo(philo);
+		return (NULL);
+	}
+	while (get_int(&philo->data->data_mutex, &philo->data->is_ready) == -1)
+		usleep(100);
+	if (get_int(&philo->data->data_mutex, &philo->data->is_ready) == 1)
+		return (NULL);
+	pthread_mutex_lock(&philo->data->data_mutex);
+	philo->last_meal_time = philo->data->start_time;
+	pthread_mutex_unlock(&philo->data->data_mutex);
+	if (philo->phi_id % 2 == 1 && philo->phi_id != philo->data->num_of_phis)
+		usleep(philo->data->time_to_eat * 1000);
+	running_routine(philo);
+	return (NULL);
+}
