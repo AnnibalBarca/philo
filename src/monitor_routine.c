@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 09:18:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 14:59:07 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:23:02 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,14 @@ void	*monitor_routine(void *arg)
 
 	all_have_eaten = 0;
 	data = (t_data *)arg;
+	if (check_all_ready(data))
+	{
+		pthread_mutex_lock(&data->data_mutex);
+		data->all_philos_ready = true;
+		pthread_mutex_unlock(&data->data_mutex);
+	}
 	while (1)
 	{
-		if (!data->all_philos_ready)
-		{
-			if (check_all_ready(data))
-			{
-				pthread_mutex_lock(&data->data_mutex);
-				data->all_philos_ready = true;
-				pthread_mutex_unlock(&data->data_mutex);
-			}
-		}
 		all_have_eaten = check_phis(data, all_have_eaten);
 		if (all_have_eaten == -1)
 			return (NULL);
