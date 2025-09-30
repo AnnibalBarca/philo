@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:25 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 13:48:41 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:38:02 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ int	init_mutexes(t_data *data)
 	while (i < data->num_of_phis)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (cleanup_mutexes_partial(data, i, 0, 0));
+			return (cleanup_mutexes_partial(data, i, 0, 0)); // leak malloc (data->fork_taken)
 		data->fork_taken[i] = -1;
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-		return (cleanup_mutexes_partial(data, data->num_of_phis, 0, 0));
+		return (cleanup_mutexes_partial(data, data->num_of_phis, 0, 0)); // leak malloc (data->fork_taken)
 	if (pthread_mutex_init(&data->data_mutex, NULL) != 0)
-		return (cleanup_mutexes_partial(data, data->num_of_phis, 1, 0));
+		return (cleanup_mutexes_partial(data, data->num_of_phis, 1, 0)); // leak malloc (data->fork_taken)
 	return (1);
 }
 
@@ -77,7 +77,7 @@ int	init_philosophers(t_data *data)
 {
 	int	i;
 
-	data->philos = malloc(sizeof(t_philo) * data->num_of_phis);
+	data->philos = malloc(sizeof(t_philo) * data->num_of_phis); // leak malloc (data->fork_taken)
 	if (!data->philos)
 		return (0);
 	i = 0;
@@ -88,9 +88,9 @@ int	init_philosophers(t_data *data)
 		data->philos[i].last_meal_time = 0;
 		data->philos[i].is_ready = false;
 		data->philos[i].data = data;
-		if (pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&data->philos[i].mutex, NULL) != 0) // leak malloc (data->fork_taken + data->philos)
 			return (0);
-		if (pthread_mutex_init(&data->philos[i].start_mutex, NULL) != 0)
+		if (pthread_mutex_init(&data->philos[i].start_mutex, NULL) != 0) // leak malloc (data->fork_taken + data->philos)
 			return (0);
 		assign_forks(&data->philos[i], data, i);
 		i++;

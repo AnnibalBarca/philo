@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 16:17:24 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:38:05 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_status(t_philo *philo, char *msg)
 
 	pthread_mutex_lock(&philo->data->print_mutex);
 	pthread_mutex_lock(&philo->data->data_mutex);
-	if (!philo->data->is_running)
+	if (!philo->data->is_running && strcmp(msg, DEATH_MSG) != 0)
 	{
 		pthread_mutex_unlock(&philo->data->data_mutex);
 		pthread_mutex_unlock(&philo->data->print_mutex);

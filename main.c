@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:32:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 14:50:39 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:38:06 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,20 @@ static int	philo_startup(t_data *data, int k, int i)
 		pthread_mutex_lock(&data->philos[k].mutex);
 		k++;
 	}
+	k = 0;
 	while (i < data->num_of_phis)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philo_routine,
 				&data->philos[i]) != 0)
+		{
+			// while (k < data->num_of_phis)
+			// {
+			// 	pthread_mutex_unlock(&data->philos[k].mutex);
+			// 	k++;
+			// }
+			// faire une fonction qui join tous les threads crees (juqu'a i) ==> pour eviter de joins des threads non crees (+ tous les cleans listés avant)
 			return (0);
+		}
 		i++;
 	}
 	set_int(&data->data_mutex, &data->is_ready, 0);
@@ -81,6 +90,8 @@ static int	run_philo(t_data *data)
 	if (!philo_startup(data, k, i))
 		return (0);
 	if (pthread_create(&monitor_thread, NULL, monitor_routine, data) != 0)
+		// leak thread ==> absence de pthread_join des threads (ne pas oublier de faire sortir les philos de leurs routines ,
+			// donc dúnlock les mutex dans lesquels ils pourraient etre bloques)
 		return (0);
 	while (k < data->num_of_phis)
 	{
