@@ -1,5 +1,3 @@
-obj/main.o: main.c include/philo.h libft/libft.h
+obj/main.o: main.c include/philo.h
 
 include/philo.h:
-
-libft/libft.h:

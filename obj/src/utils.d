@@ -1,5 +1,3 @@
-obj/src/utils.o: src/utils.c include/philo.h libft/libft.h
+obj/src/utils.o: src/utils.c include/philo.h
 
 include/philo.h:
-
-libft/libft.h:

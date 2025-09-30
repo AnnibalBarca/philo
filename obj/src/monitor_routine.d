@@ -1,6 +1,3 @@
-obj/src/monitor_routine.o: src/monitor_routine.c include/philo.h \
-  libft/libft.h
+obj/src/monitor_routine.o: src/monitor_routine.c include/philo.h
 
 include/philo.h:
-
-libft/libft.h:

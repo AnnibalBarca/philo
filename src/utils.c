@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 16:08:49 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:17:24 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_usleep_ms(long ms, t_philo *philo)
 		last_meal = get_long(&philo->mutex, &philo->last_meal_time);
 		if (now - last_meal > philo->data->time_to_die)
 			return (1);
-		usleep(1000);
+		usleep(100);
 	}
 	return (0);
 }
