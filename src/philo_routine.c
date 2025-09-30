@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 12:58:43 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:10:14 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	handle_single_philo(t_philo *philo)
 	pthread_mutex_lock(philo->left_fork);
 	print_status(philo, FORK_MSG);
 	pthread_mutex_unlock(philo->left_fork);
-	usleep(philo->data->time_to_die * 1000);
+	ft_usleep_ms(philo->data->time_to_die, philo);
 }
 
 static void	running_routine(t_philo	*philo)
@@ -52,13 +52,16 @@ void	*philo_routine(void *arg)
 		return (NULL);
 	}
 	while (get_int(&philo->data->data_mutex, &philo->data->is_ready) == -1)
-		usleep(100);
+		usleep(50);
 	if (get_int(&philo->data->data_mutex, &philo->data->is_ready) == 1)
 		return (NULL);
 	set_long(&philo->mutex, &philo->last_meal_time,
 		philo->data->start_time);
 	if (philo->phi_id % 2 == 1 && philo->phi_id != philo->data->num_of_phis)
-		usleep(philo->data->time_to_eat * 1000);
+	{
+		if (ft_usleep_ms(philo->data->time_to_eat, philo))
+			return (NULL);
+	}
 	running_routine(philo);
 	return (NULL);
 }

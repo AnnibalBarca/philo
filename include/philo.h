@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 13:01:57 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:08:49 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int						cleanup_mutexes_partial(t_data *data,
 							int data_initialized);
 void					cleanup_all(t_data *data);
 long					get_time(void);
-int						ft_usleep_ms(long ms, t_data *data);
+int						ft_usleep_ms(long ms, t_philo *philo);
 void					print_status(t_philo *philo, char *msg);
 void					*philo_routine(void *arg);
 void					*monitor_routine(void *arg);

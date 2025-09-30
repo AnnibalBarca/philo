@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 12:50:32 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:08:49 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,29 @@ void	print_status(t_philo *philo, char *msg)
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
-int	ft_usleep_ms(long ms, t_data *data)
+int	ft_usleep_ms(long ms, t_philo *philo)
 {
 	long	start;
+	long	now;
+	long	last_meal;
 
 	start = get_time();
-	while (get_time() - start < ms)
+	while (1)
 	{
-		pthread_mutex_lock(&data->data_mutex);
-		if (!data->is_running)
+		now = get_time();
+		if (now - start >= ms)
+			break ;
+		pthread_mutex_lock(&philo->data->data_mutex);
+		if (!philo->data->is_running)
 		{
-			pthread_mutex_unlock(&data->data_mutex);
+			pthread_mutex_unlock(&philo->data->data_mutex);
 			return (1);
 		}
-		pthread_mutex_unlock(&data->data_mutex); 
-		usleep(400);
+		pthread_mutex_unlock(&philo->data->data_mutex);
+		last_meal = get_long(&philo->mutex, &philo->last_meal_time);
+		if (now - last_meal > philo->data->time_to_die)
+			return (1);
+		usleep(1000);
 	}
 	return (0);
 }
@@ -77,7 +85,7 @@ int	take_single_fork(pthread_mutex_t *fork, t_philo *ph, int idx)
 			return (1);
 		}
 		pthread_mutex_unlock(fork);
-		usleep(400);
+		usleep(50);
 	}
 }
 
