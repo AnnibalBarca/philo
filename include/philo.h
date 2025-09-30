@@ -6,15 +6,16 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/28 13:47:22 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 13:01:57 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "libft.h"
+# include <limits.h>
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -44,8 +45,10 @@ typedef struct s_philo
 	pthread_mutex_t		*right_fork;
 	t_data				*data;
 	bool				is_ready;
-	int                 left_idx;
-	int                 right_idx;
+	int					left_idx;
+	int					right_idx;
+	pthread_mutex_t		start_mutex;
+
 }						t_philo;
 
 typedef struct s_data
@@ -58,46 +61,43 @@ typedef struct s_data
 	int					is_running;
 	long				start_time;
 	pthread_mutex_t		*forks;
-	int                 *fork_taken;
+	int					*fork_taken;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		data_mutex;
 	int					is_ready;
+	pthread_mutex_t		start_mutex;
 	t_philo				*philos;
 	bool				all_philos_ready;
 }						t_data;
 
 int						data_init(t_data *data, int ac, char **av);
-
 int						init_mutexes(t_data *data);
-
 int						init_philosophers(t_data *data);
-
 int						cleanup_mutexes_partial(t_data *data,
 							int forks_initialized, int print_initialized,
 							int data_initialized);
-
 void					cleanup_all(t_data *data);
-
 long					get_time(void);
-
 int						ft_usleep_ms(long ms, t_data *data);
-
 void					print_status(t_philo *philo, char *msg);
-
-int						run_philo(t_data *data);
-
 void					*philo_routine(void *arg);
-
 void					*monitor_routine(void *arg);
-
 void					take_forks(t_philo *philo);
-
 void					put_forks(t_philo *philo);
-
 void					eat(t_philo *philo);
-
 void					philo_sleep(t_philo *philo);
-
 void					think(t_philo *philo);
+int						take_single_fork(pthread_mutex_t *fork, t_philo *ph,
+							int idx);
+bool					get_bool(pthread_mutex_t *mtx, bool *var);
+void					set_bool(pthread_mutex_t *mtx, bool *value,
+							bool new_value);
+void					set_int(pthread_mutex_t *mtx, int *value,
+							int new_value);
+int						get_int(pthread_mutex_t *mtx, int *var);
+void					set_long(pthread_mutex_t *mtx, long *value,
+							long new_value);
+long					get_long(pthread_mutex_t *mtx, long *var);
+long int				ft_strtol(const char *str);
 
 #endif

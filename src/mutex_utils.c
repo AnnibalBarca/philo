@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:52:03 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/28 18:52:19 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:58:43 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,23 @@ void	set_int(pthread_mutex_t *mtx, int *value, int new_value)
 int	get_int(pthread_mutex_t *mtx, int *var)
 {
 	int	ret;
+
+	pthread_mutex_lock(mtx);
+	ret = *var;
+	pthread_mutex_unlock(mtx);
+	return (ret);
+}
+
+void	set_long(pthread_mutex_t *mtx, long *value, long new_value)
+{
+	pthread_mutex_lock(mtx);
+	*value = new_value;
+	pthread_mutex_unlock(mtx);
+}
+
+long	get_long(pthread_mutex_t *mtx, long *var)
+{
+	long	ret;
 
 	pthread_mutex_lock(mtx);
 	ret = *var;

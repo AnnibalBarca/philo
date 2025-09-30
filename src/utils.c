@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/28 19:17:43 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:50:32 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	ft_usleep_ms(long ms, t_data *data)
 			pthread_mutex_unlock(&data->data_mutex);
 			return (1);
 		}
-		pthread_mutex_unlock(&data->data_mutex);
-		usleep(100);
+		pthread_mutex_unlock(&data->data_mutex); 
+		usleep(400);
 	}
 	return (0);
 }
@@ -77,7 +77,7 @@ int	take_single_fork(pthread_mutex_t *fork, t_philo *ph, int idx)
 			return (1);
 		}
 		pthread_mutex_unlock(fork);
-		usleep(100);
+		usleep(400);
 	}
 }
 

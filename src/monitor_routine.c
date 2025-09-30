@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 09:18:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/28 19:29:44 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:58:43 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ static int	is_philo_dead(t_data *data, int i)
 	long long	last_meal;
 
 	current_time = get_time();
-	pthread_mutex_lock(&data->philos[i].mutex);
-	last_meal = data->philos[i].last_meal_time;
-	pthread_mutex_unlock(&data->philos[i].mutex);
+	last_meal = get_long(&data->philos[i].mutex, &data->philos[i].last_meal_time);
 	if (current_time - last_meal > data->time_to_die)
 	{
 		print_status(&data->philos[i], DEATH_MSG);
@@ -110,7 +108,7 @@ void	*monitor_routine(void *arg)
 			return (NULL);
 		if (have_philos_eaten_all(data, all_have_eaten))
 			return (NULL);
-		usleep(1000);
+		usleep(400);
 	}
 	return (NULL);
 }

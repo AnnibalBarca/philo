@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/28 18:44:34 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:58:43 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,8 @@ void	*philo_routine(void *arg)
 		usleep(100);
 	if (get_int(&philo->data->data_mutex, &philo->data->is_ready) == 1)
 		return (NULL);
-	pthread_mutex_lock(&philo->data->data_mutex);
-	philo->last_meal_time = philo->data->start_time;
-	pthread_mutex_unlock(&philo->data->data_mutex);
+	set_long(&philo->mutex, &philo->last_meal_time,
+		philo->data->start_time);
 	if (philo->phi_id % 2 == 1 && philo->phi_id != philo->data->num_of_phis)
 		usleep(philo->data->time_to_eat * 1000);
 	running_routine(philo);
