@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mutex_utils.c                                      :+:      :+:    :+:   */
+/*   setters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 18:52:03 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 14:50:26 by almeekel         ###   ########.fr       */
+/*   Created: 2025/10/01 04:40:10 by Mimoulapino       #+#    #+#             */
+/*   Updated: 2025/10/01 04:40:33 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-bool	get_bool(pthread_mutex_t *mtx, bool *var)
-{
-	bool	ret;
-
-	pthread_mutex_lock(mtx);
-	ret = *var;
-	pthread_mutex_unlock(mtx);
-	return (ret);
-}
 
 void	set_bool(pthread_mutex_t *mtx, bool *value, bool new_value)
 {
@@ -35,30 +25,9 @@ void	set_int(pthread_mutex_t *mtx, int *value, int new_value)
 	*value = new_value;
 	pthread_mutex_unlock(mtx);
 }
-
-int	get_int(pthread_mutex_t *mtx, int *var)
-{
-	int	ret;
-
-	pthread_mutex_lock(mtx);
-	ret = *var;
-	pthread_mutex_unlock(mtx);
-	return (ret);
-}
-
 void	set_long(pthread_mutex_t *mtx, long *value, long new_value)
 {
 	pthread_mutex_lock(mtx);
 	*value = new_value;
 	pthread_mutex_unlock(mtx);
-}
-
-long	get_long(pthread_mutex_t *mtx, long *var)
-{
-	long	ret;
-
-	pthread_mutex_lock(mtx);
-	ret = *var;
-	pthread_mutex_unlock(mtx);
-	return (ret);
 }

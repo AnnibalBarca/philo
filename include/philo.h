@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:32:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 16:08:49 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/10/01 05:43:51 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,8 @@ void					set_long(pthread_mutex_t *mtx, long *value,
 							long new_value);
 long					get_long(pthread_mutex_t *mtx, long *var);
 long int				ft_strtol(const char *str);
+int						ft_strcmp(const char *s1, const char *s2);
+int						cleanup_init_philos_partial(t_data *data,
+							int philos_initialized);
 
 #endif

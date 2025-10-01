@@ -7,7 +7,7 @@ DEPS = $(OBJ:.o=.d)
 
 
 
-SRC_PHILO = src/init.c src/cleanup.c src/utils.c src/philo_actions.c src/philo_routine.c src/monitor_routine.c src/mutex_utils.c
+SRC_PHILO = src/init.c src/cleanup.c src/utils.c src/philo_actions.c src/philo_routine.c src/monitor_routine.c src/setters.c src/getters.c src/fork_handling.c
 
 SRC_ALL = $(SRC_PHILO) main.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 15:32:36 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 17:38:06 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/10/01 06:28:28 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,19 @@ static int	philo_startup(t_data *data, int k, int i)
 	while (i < data->num_of_phis)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philo_routine,
-				&data->philos[i]) != 0)
+				&data->philos[i]) != 0 || 1)
 		{
-			// while (k < data->num_of_phis)
-			// {
-			// 	pthread_mutex_unlock(&data->philos[k].mutex);
-			// 	k++;
-			// }
+			while (k < data->num_of_phis)
+			{
+				pthread_mutex_unlock(&data->philos[k].mutex);
+				k++;
+			}
+			k = 0;
+			while (k < i)
+			{
+				pthread_join(data->philos[k].thread, NULL);
+				k++;
+			}
 			// faire une fonction qui join tous les threads crees (juqu'a i) ==> pour eviter de joins des threads non crees (+ tous les cleans listés avant)
 			return (0);
 		}

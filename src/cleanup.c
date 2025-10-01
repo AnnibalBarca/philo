@@ -3,33 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:02:47 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 17:38:03 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/10/01 05:41:45 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	cleanup_mutexes_partial(t_data *data, int forks_initialized,
-		int print_initialized, int data_initialized)
+void	cleanup_until_index(int forks_initialized, pthread_mutex_t *__mutex)
 {
 	int	i;
 
 	i = 0;
 	while (i < forks_initialized)
 	{
-		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&__mutex[i]);
 		i++;
 	}
+}
+
+int	cleanup_mutexes_partial(t_data *data, int forks_initialized,
+		int print_initialized, int data_initialized)
+{
+	cleanup_until_index(forks_initialized, data->forks);
 	if (print_initialized)
 		pthread_mutex_destroy(&data->print_mutex);
 	if (data_initialized)
 		pthread_mutex_destroy(&data->data_mutex);
-	free(data->forks);
-	// free(data->forks_taken); -- peut etre ???
-	// free(data->philos); -- peut etre ???
+	if (data->forks)
+		free(data->forks);
+	if (data->fork_taken)
+		free(data->fork_taken);
+	if (data->philos)
+		free(data->philos);
+	return (0);
+}
+
+int	cleanup_init_philos_partial(t_data *data, int philos_initialized)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos_initialized)
+	{
+		pthread_mutex_destroy(&data->philos[i].mutex);
+		pthread_mutex_destroy(&data->philos[i].start_mutex);
+		i++;
+	}
+	if (data->philos)
+	{
+		free(data->philos);
+		data->philos = NULL;
+	}
 	return (0);
 }
 

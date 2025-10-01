@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:36:27 by almeekel          #+#    #+#             */
-/*   Updated: 2025/09/30 17:38:05 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/10/01 04:45:51 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
 
 long	get_time(void)
 {
@@ -26,7 +36,7 @@ void	print_status(t_philo *philo, char *msg)
 
 	pthread_mutex_lock(&philo->data->print_mutex);
 	pthread_mutex_lock(&philo->data->data_mutex);
-	if (!philo->data->is_running && strcmp(msg, DEATH_MSG) != 0)
+	if (!philo->data->is_running && ft_strcmp(msg, DEATH_MSG) != 0)
 	{
 		pthread_mutex_unlock(&philo->data->data_mutex);
 		pthread_mutex_unlock(&philo->data->print_mutex);
@@ -63,30 +73,6 @@ int	ft_usleep_ms(long ms, t_philo *philo)
 		usleep(100);
 	}
 	return (0);
-}
-
-int	take_single_fork(pthread_mutex_t *fork, t_philo *ph, int idx)
-{
-	while (1)
-	{
-		pthread_mutex_lock(&ph->data->data_mutex);
-		if (!ph->data->is_running)
-		{
-			pthread_mutex_unlock(&ph->data->data_mutex);
-			return (0);
-		}
-		pthread_mutex_unlock(&ph->data->data_mutex);
-		pthread_mutex_lock(fork);
-		if (ph->data->fork_taken[idx] == -1)
-		{
-			ph->data->fork_taken[idx] = 1;
-			pthread_mutex_unlock(fork);
-			print_status(ph, FORK_MSG);
-			return (1);
-		}
-		pthread_mutex_unlock(fork);
-		usleep(50);
-	}
 }
 
 long int	ft_strtol(const char *str)
